@@ -1,0 +1,6 @@
+# iml files
+*.iml
+# IntelliJ configuration files
+/.idea
+# IntelliJ target files with classes
+/target
