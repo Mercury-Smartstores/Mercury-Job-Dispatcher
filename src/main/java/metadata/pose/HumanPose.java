@@ -1,4 +1,4 @@
-package pose;
+package metadata.pose;
 
 import java.util.HashMap;
 

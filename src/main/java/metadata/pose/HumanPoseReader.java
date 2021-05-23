@@ -1,4 +1,4 @@
-package pose;
+package metadata.pose;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
