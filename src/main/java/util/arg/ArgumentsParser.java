@@ -30,13 +30,9 @@ public class ArgumentsParser {
     public void parse(String [] args) {
         try {
             CommandLine cmd = parser.parse(options, args);
-            if (cmd.hasOption("t")) {
-                trackingMetadataFilename = cmd.getOptionValue("t");
-            } else if (cmd.hasOption("p")) {
-                poseMetadataFilename = cmd.getOptionValue("p");
-            } else if (cmd.hasOption("s")) {
-                shelfMetadataFilename = cmd.getOptionValue("s");
-            }
+            trackingMetadataFilename = cmd.getOptionValue("t");
+            poseMetadataFilename = cmd.getOptionValue("p");
+            shelfMetadataFilename = cmd.getOptionValue("s");
         } catch (ParseException e) {
             System.out.println("Error while parsing command-line arguments");
             System.out.println("Please, follow the instructions below:");
