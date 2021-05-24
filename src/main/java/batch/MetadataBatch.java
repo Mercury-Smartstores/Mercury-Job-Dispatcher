@@ -11,13 +11,14 @@ import static util.Utilities.mapToString;
 @AllArgsConstructor
 public final class MetadataBatch {
 
+    public final Integer frameId;
     public final Map<Integer, List<MetadataObject>> poseMetadata;
-    public final Map<Integer, List<MetadataObject>> shelfMetadata;
+    public final MetadataObject shelfMetadata;
     public final Map<Integer, List<MetadataObject>> trackerMetadata;
 
     public String toString() {
-        return String.format("Pose Metadata: %s\nShelf Metadata: %s\nTracker Metadata: %s", mapToString(poseMetadata),
-                mapToString(shelfMetadata), mapToString(trackerMetadata));
+        return String.format("Frame id: %d\n Pose Metadata: %s\nShelf Metadata: %s\nTracker Metadata: %s",
+                frameId, mapToString(poseMetadata), shelfMetadata, mapToString(trackerMetadata));
     }
 
 

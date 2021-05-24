@@ -24,6 +24,9 @@ public class BoundingQuadrilateral {
     @Getter
     private final Point lowerLeftPoint;
 
+    @Getter
+    private final Point diagonalIntersectionPoint;
+
     public BoundingQuadrilateral(Point p1, Point p2, Point p3, Point p4) throws UnexpectedException {
         if (Geometry.collinear(p1, p2, p3) || Geometry.collinear(p1, p2, p4) ||
                 Geometry.collinear(p1, p3, p4) || Geometry.collinear(p2, p3, p4) ||
@@ -32,17 +35,17 @@ public class BoundingQuadrilateral {
             throw new IllegalArgumentException("The points received do not define any convex quadrilateral");
         }
 
-        ArrayList<Integer> coordY = new ArrayList<>(Arrays.asList(p1.y, p2.y, p3.y, p4.y));
-        ArrayList<Integer> coordX = new ArrayList<>(Arrays.asList(p1.x, p2.x, p3.x, p4.x));
+        ArrayList<Integer> coordinatesY = new ArrayList<>(Arrays.asList(p1.y, p2.y, p3.y, p4.y));
+        ArrayList<Integer> coordinatesX = new ArrayList<>(Arrays.asList(p1.x, p2.x, p3.x, p4.x));
         Point[] points = {p1, p2, p3, p4};
 
-        Collections.sort(coordY);
-        Collections.sort(coordX);
+        Collections.sort(coordinatesY);
+        Collections.sort(coordinatesX);
 
-        Function<Point, Boolean> isUpper = p -> (p.y == coordY.get(3) || p.y == coordY.get(2));
-        Function<Point, Boolean> isRight = p -> (p.x == coordX.get(2) || p.x == coordX.get(3));
-        Function<Point, Boolean> isLower = p -> (p.y == coordY.get(0) || p.y == coordY.get(1));
-        Function<Point, Boolean> isLeft = p -> (p.x == coordX.get(0) || p.x == coordX.get(1));
+        Function<Point, Boolean> isUpper = p -> (p.y == coordinatesY.get(3) || p.y == coordinatesY.get(2));
+        Function<Point, Boolean> isRight = p -> (p.x == coordinatesX.get(2) || p.x == coordinatesX.get(3));
+        Function<Point, Boolean> isLower = p -> (p.y == coordinatesY.get(0) || p.y == coordinatesY.get(1));
+        Function<Point, Boolean> isLeft = p -> (p.x == coordinatesX.get(0) || p.x == coordinatesX.get(1));
 
         Optional<Point> optionalUpperRight = Arrays.stream(points)
                 .filter(p -> isUpper.apply(p) && isRight.apply(p))
@@ -67,6 +70,8 @@ public class BoundingQuadrilateral {
             throw new UnexpectedException("One of the points for the quadrilateral cannot be located");
         }
 
+        this.diagonalIntersectionPoint = Geometry.intersectionTwoLines(this.upperRightPoint, this.lowerLeftPoint,
+                this.upperLeftPoint, this.lowerRightPoint);
     }
 
 
@@ -78,6 +83,10 @@ public class BoundingQuadrilateral {
         double totalAngle = v1.angle(v2) + v2.angle(v3) + v3.angle(v4) + v4.angle(v1);
         double expectedAngle = Math.PI * 2;
         return totalAngle >= expectedAngle - TOLERANCE && totalAngle <= expectedAngle + TOLERANCE;
+    }
+
+    public double distance(Point p) {
+        return Geometry.distance(p, this.diagonalIntersectionPoint);
     }
 
     public String toString() {
