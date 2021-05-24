@@ -1,4 +1,8 @@
+import util.Utilities;
 import util.arg.ArgumentsParser;
+
+import java.util.List;
+import java.util.Map;
 
 public class JobDispatcher {
 
@@ -6,6 +10,7 @@ public class JobDispatcher {
 
     public static void main (String [] args) {
         argumentsParser.parse(args);
+        Map<Integer, List<String>> shelfMap = Utilities.parseShelfMetadata(argumentsParser.getShelfMetadataFilename());
     }
 
 }
