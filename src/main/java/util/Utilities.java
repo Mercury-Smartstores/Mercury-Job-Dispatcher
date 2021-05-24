@@ -1,8 +1,12 @@
 package util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+import util.io.HumanPoseFileFormat;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,6 +34,33 @@ public final class Utilities {
             } else {
                 result.put(frame, new ArrayList<>(Arrays.asList(lineSplit[1])));
             }
+        });
+        return result;
+    }
+
+    @SneakyThrows
+    public static Map<Integer, List<String>> parsePoseMetadata(final String filepath) {
+        Map<Integer, List<String>> result = new HashMap<>();
+        Optional<String> jsonInput = getContentStream(filepath).reduce((f, s) -> f + "\n" + s);
+        if (jsonInput.isEmpty()) {
+            return result;
+        }
+        String jsonString = jsonInput.get();
+        ObjectMapper mapper = new ObjectMapper();
+        List<HumanPoseFileFormat> json = mapper.readValue(jsonString, new TypeReference<>(){});
+        json.forEach(data -> {
+            List<String> poses = new ArrayList<>();
+            data.poses.forEach(pose -> {
+                String jsonPoseString = "";
+                try {
+                    jsonPoseString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(pose);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+                poses.add(jsonPoseString);
+            });
+            result.put(data.frame, poses);
         });
         return result;
     }

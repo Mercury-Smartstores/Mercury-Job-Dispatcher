@@ -3,6 +3,7 @@ package metadata.pose;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import metadata.MetadataReader;
 import util.AbstractSingleton;
@@ -36,18 +37,24 @@ public final class HumanPoseReader extends MetadataReader<HumanPose> {
         return new HumanPose(body);
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     static class Position {
         public double x;
         public double y;
     }
 
-    static class Result {
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Result {
         public double score;
         public String part;
         public Position position;
     }
 
-    static class Root {
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Root {
         public boolean success;
         public List<Result> result;
     }

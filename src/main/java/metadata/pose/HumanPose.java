@@ -1,6 +1,7 @@
 package metadata.pose;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import metadata.MetadataObject;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ public final class HumanPose extends MetadataObject {
     public HashMap<String, BodyPart> body;
 
     @AllArgsConstructor
+    @NoArgsConstructor
     static class BodyPart {
         public double x;
         public double y;
