@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class BoundingQuadrilateral {
 
@@ -26,7 +27,8 @@ public class BoundingQuadrilateral {
     public BoundingQuadrilateral(Point p1, Point p2, Point p3, Point p4) throws UnexpectedException {
         if (Geometry.collinear(p1, p2, p3) || Geometry.collinear(p1, p2, p4) ||
                 Geometry.collinear(p1, p3, p4) || Geometry.collinear(p2, p3, p4) ||
-                !(Geometry.intersect(p1, p2, p3, p4) || Geometry.intersect(p1, p3, p2, p4) || Geometry.intersect(p1, p2, p4, p3))) {
+                !(Geometry.intersectSegment(p1, p2, p3, p4) ||
+                        Geometry.intersectSegment(p1, p3, p2, p4) || Geometry.intersectSegment(p1, p2, p4, p3))) {
             throw new IllegalArgumentException("The points received do not define any convex quadrilateral");
         }
 
@@ -37,18 +39,24 @@ public class BoundingQuadrilateral {
         Collections.sort(coordY);
         Collections.sort(coordX);
 
+        Function<Point, Boolean> isUpper = p -> (p.y == coordY.get(3) || p.y == coordY.get(2));
+        Function<Point, Boolean> isRight = p -> (p.x == coordX.get(2) || p.x == coordX.get(3));
+        Function<Point, Boolean> isLower = p -> (p.y == coordY.get(0) || p.y == coordY.get(1));
+        Function<Point, Boolean> isLeft = p -> (p.x == coordX.get(0) || p.x == coordX.get(1));
+
         Optional<Point> optionalUpperRight = Arrays.stream(points)
-                .filter(p -> (p.y == coordY.get(3) || p.y == coordY.get(2)) && (p.x == coordX.get(2) || p.x == coordX.get(3)))
+                .filter(p -> isUpper.apply(p) && isRight.apply(p))
                 .findFirst();
         Optional<Point> optionalUpperLeft = Arrays.stream(points)
-                .filter(p -> (p.y == coordY.get(3) || p.y == coordY.get(2)) && (p.x == coordX.get(0) || p.x == coordX.get(1)))
+                .filter(p -> isUpper.apply(p) && isLeft.apply(p))
                 .findFirst();
         Optional<Point> optionalLowerRight = Arrays.stream(points)
-                .filter(p -> (p.y == coordY.get(0) || p.y == coordY.get(1)) && (p.x == coordX.get(2) || p.x == coordX.get(3)))
+                .filter(p -> isLower.apply(p) && isRight.apply(p))
                 .findFirst();
         Optional<Point> optionalLowerLeft = Arrays.stream(points)
-                .filter(p -> (p.y == coordY.get(0) || p.y == coordY.get(1)) && (p.x == coordX.get(0) || p.x == coordX.get(1)))
+                .filter(p -> isLower.apply(p) && isLeft.apply(p))
                 .findFirst();
+
         if (optionalUpperRight.isPresent() && optionalUpperLeft.isPresent() &&
                 optionalLowerRight.isPresent() && optionalLowerLeft.isPresent()) {
             this.upperRightPoint = optionalUpperRight.get();
