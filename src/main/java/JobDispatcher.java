@@ -1,7 +1,11 @@
+import util.arg.ArgumentsParser;
+
 public class JobDispatcher {
 
-    public static void main (String [ ] args) {
-        System.out.println("Hello Mercury!");
+    private static final ArgumentsParser argumentsParser = new ArgumentsParser();
+
+    public static void main (String [] args) {
+        argumentsParser.parse(args);
     }
 
 }
