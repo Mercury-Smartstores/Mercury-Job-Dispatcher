@@ -14,7 +14,7 @@ import java.util.List;
 public final class HumanPoseReader extends MetadataReader<HumanPose> {
 
 
-    private static final AbstractSingleton<HumanPoseReader> objHolder = new AbstractSingleton<HumanPoseReader>() {
+    private static final AbstractSingleton<HumanPoseReader> objHolder = new AbstractSingleton<>() {
         @Override
         protected HumanPoseReader newObj() {
             return new HumanPoseReader();

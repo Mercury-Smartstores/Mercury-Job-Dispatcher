@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ShelfDataReader extends MetadataReader<ShelfData> {
 
-    private static final AbstractSingleton<ShelfDataReader> objHolder = new AbstractSingleton<ShelfDataReader>() {
+    private static final AbstractSingleton<ShelfDataReader> objHolder = new AbstractSingleton<>() {
         @Override
         protected ShelfDataReader newObj() {
             return new ShelfDataReader();

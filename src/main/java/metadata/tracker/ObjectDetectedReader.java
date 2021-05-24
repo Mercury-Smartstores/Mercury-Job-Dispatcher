@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public final class ObjectDetectedReader extends MetadataReader<ObjectDetected> {
 
 
-    private static final AbstractSingleton<ObjectDetectedReader> objHolder = new AbstractSingleton<ObjectDetectedReader>() {
+    private static final AbstractSingleton<ObjectDetectedReader> objHolder = new AbstractSingleton<>() {
         @Override
         protected ObjectDetectedReader newObj() {
             return new ObjectDetectedReader();
