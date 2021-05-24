@@ -5,30 +5,31 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import metadata.MetadataReader;
 import util.AbstractSingleton;
+import util.math.BoundingQuadrilateral;
 
+import java.awt.*;
+import java.rmi.UnexpectedException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ObjectDetectedReader extends MetadataReader<ObjectDetected> {
+public final class EntityReader extends MetadataReader<Entity> {
 
 
-    private static final AbstractSingleton<ObjectDetectedReader> objHolder = new AbstractSingleton<>() {
+    private static final AbstractSingleton<EntityReader> objHolder = new AbstractSingleton<>() {
         @Override
-        protected ObjectDetectedReader newObj() {
-            return new ObjectDetectedReader();
+        protected EntityReader newObj() {
+            return new EntityReader();
         }
     };
 
-    public static ObjectDetectedReader getInstance(){
+    public static EntityReader getInstance(){
         return objHolder.getInstance();
     }
 
     @Override
-    public ObjectDetected read(String metadata) throws ParseException {
+    public Entity read(String metadata) throws ParseException, UnexpectedException {
         Pattern boxCoordPattern = Pattern.compile("\\((\\d+), (\\d+), (\\d+), (\\d+)\\)");
         Pattern trackerIdPattern = Pattern.compile("Tracker ID: (\\d+)");
         Pattern classPattern = Pattern.compile("Class: ([a-zA-Z]+)");
@@ -42,11 +43,18 @@ public final class ObjectDetectedReader extends MetadataReader<ObjectDetected> {
 
         String className = classMatcher.group(1);
         Integer objectId = Integer.parseInt(trackerIdMatcher.group(1));
-        List<Integer> boxCoord = new ArrayList<>();
-        for (int i = 1; i <= 4; i++) {
-            boxCoord.add(Integer.parseInt(boxMatcher.group(i)));
-        }
-        return new ObjectDetected(className, objectId, boxCoord);
+
+        int xmin = Integer.parseInt(boxMatcher.group(1));
+        int ymin = Integer.parseInt(boxMatcher.group(2));
+        int xmax = Integer.parseInt(boxMatcher.group(3));
+        int ymax = Integer.parseInt(boxMatcher.group(4));
+
+        Point p1 = new Point(xmin, ymin);
+        Point p3 = new Point(xmax, ymax);
+        Point p2 = new Point(xmin, ymax);
+        Point p4 = new Point(xmax, ymin);
+
+        return new Entity(className, objectId, new BoundingQuadrilateral(p1, p2, p3, p4));
     }
 
 }
