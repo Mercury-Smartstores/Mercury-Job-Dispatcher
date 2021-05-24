@@ -11,6 +11,10 @@ import util.io.HumanPoseFileFormat;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,6 +65,29 @@ public final class Utilities {
                 poses.add(jsonPoseString);
             });
             result.put(data.frame, poses);
+        });
+        return result;
+    }
+
+    @SneakyThrows
+    public static Map<Integer, List<String>> parseTrackingMetadata(final String filepath) {
+        Map<Integer, List<String>> result = new HashMap<>();
+        Pattern framePattern = Pattern.compile("Frame #: {2}(\\d+)");
+        AtomicBoolean isValid = new AtomicBoolean(false);
+        List<String> trackingInfoList = new ArrayList<>();
+        AtomicInteger frame = new AtomicInteger(0);
+        getContentStream(filepath).forEachOrdered(line -> {
+            Matcher framePatternMatcher = framePattern.matcher(line);
+            if (framePatternMatcher.matches()) {
+                frame.set(Integer.parseInt(framePatternMatcher.group(1)));
+            } else if (line.contains("Tracker")) {
+                isValid.set(true);
+                trackingInfoList.add(line);
+            } else if (line.contains("FPS") && isValid.get()) {
+                result.put(frame.get(), new ArrayList<>(trackingInfoList));
+                isValid.set(false);
+                trackingInfoList.clear();
+            }
         });
         return result;
     }
