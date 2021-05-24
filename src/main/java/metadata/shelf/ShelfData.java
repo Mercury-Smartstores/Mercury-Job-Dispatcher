@@ -1,9 +1,10 @@
 package metadata.shelf;
 
 import lombok.AllArgsConstructor;
+import metadata.MetadataObject;
 
 @AllArgsConstructor
-public class ShelfData {
+public class ShelfData extends MetadataObject {
 
     public final Integer shelfStand;
     public final String action;

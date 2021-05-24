@@ -3,6 +3,8 @@ package metadata.tracker;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import metadata.MetadataReader;
+import util.AbstractSingleton;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -11,10 +13,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ObjectDetectedReader {
+public final class ObjectDetectedReader extends MetadataReader<ObjectDetected> {
 
-    public static ObjectDetected read(String metadata) throws ParseException {
 
+    private static final AbstractSingleton<ObjectDetectedReader> objHolder = new AbstractSingleton<ObjectDetectedReader>() {
+        @Override
+        protected ObjectDetectedReader newObj() {
+            return new ObjectDetectedReader();
+        }
+    };
+
+    public static ObjectDetectedReader getInstance(){
+        return objHolder.getInstance();
+    }
+
+    @Override
+    public ObjectDetected read(String metadata) throws ParseException {
         Pattern boxCoordPattern = Pattern.compile("\\((\\d+), (\\d+), (\\d+), (\\d+)\\)");
         Pattern trackerIdPattern = Pattern.compile("Tracker ID: (\\d+)");
         Pattern classPattern = Pattern.compile("Class: ([a-zA-Z]+)");

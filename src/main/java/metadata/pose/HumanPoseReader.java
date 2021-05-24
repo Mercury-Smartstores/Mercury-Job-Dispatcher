@@ -4,14 +4,29 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import metadata.MetadataReader;
+import util.AbstractSingleton;
 
 import java.util.HashMap;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class HumanPoseReader {
+public final class HumanPoseReader extends MetadataReader<HumanPose> {
 
-    public static HumanPose read(String jsonStr) throws JsonProcessingException {
+
+    private static final AbstractSingleton<HumanPoseReader> objHolder = new AbstractSingleton<HumanPoseReader>() {
+        @Override
+        protected HumanPoseReader newObj() {
+            return new HumanPoseReader();
+        }
+    };
+
+    public static HumanPoseReader getInstance() {
+        return objHolder.getInstance();
+    }
+
+    @Override
+    public HumanPose read(String jsonStr) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         Root root = objectMapper.readValue(jsonStr, Root.class);
         HashMap<String, HumanPose.BodyPart> body = new HashMap<>();
