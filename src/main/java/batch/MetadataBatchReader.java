@@ -1,6 +1,8 @@
 package batch;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import metadata.pose.HumanPose;
 import metadata.pose.HumanPoseReader;
 import metadata.shelf.ShelfData;
@@ -12,10 +14,8 @@ import java.text.ParseException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MetadataBatchReader {
-
-    private MetadataBatchReader() {
-    }
 
     public static MetadataBatch read(Map<Integer, String> poseMetadata, Map<Integer, String> shelfMetadata,
                                      Map<Integer, String> trackerMetadata) {

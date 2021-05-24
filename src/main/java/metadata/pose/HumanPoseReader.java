@@ -2,14 +2,14 @@ package metadata.pose;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class HumanPoseReader {
-
-    private HumanPoseReader() {
-    }
 
     public static HumanPose read(String jsonStr) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();

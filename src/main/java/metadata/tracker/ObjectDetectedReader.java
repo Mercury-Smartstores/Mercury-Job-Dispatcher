@@ -1,16 +1,17 @@
 package metadata.tracker;
 
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ObjectDetectedReader {
-
-    private ObjectDetectedReader() {
-    }
 
     public static ObjectDetected read(String metadata) throws ParseException {
 

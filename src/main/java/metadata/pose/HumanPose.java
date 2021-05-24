@@ -1,14 +1,13 @@
 package metadata.pose;
 
+import lombok.AllArgsConstructor;
+
 import java.util.HashMap;
 
+@AllArgsConstructor
 public final class HumanPose {
 
     public HashMap<String, BodyPart> body;
-
-    public HumanPose(HashMap<String, BodyPart> body) {
-        this.body = body;
-    }
 
     static class BodyPart {
         public double x;

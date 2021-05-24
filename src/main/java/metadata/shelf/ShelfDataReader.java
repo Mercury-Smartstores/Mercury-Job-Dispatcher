@@ -1,12 +1,14 @@
 package metadata.shelf;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ShelfDataReader {
-
-    private ShelfDataReader(){}
 
     public static ShelfData read(String data) throws ParseException {
         Pattern shelfDataPattern = Pattern.compile("(\\d+)-(\\w*)-(\\d*\\.?\\d*)");
