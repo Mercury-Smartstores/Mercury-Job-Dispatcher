@@ -13,7 +13,7 @@ public final class HumanPose extends MetadataObject {
 
     @AllArgsConstructor
     @NoArgsConstructor
-    static class BodyPart {
+    public static class BodyPart {
         public double x;
         public double y;
         public double score;
