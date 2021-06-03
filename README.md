@@ -5,7 +5,7 @@ the likelihood of the customer taking or dropping an item.
 
 Shelves Prisms            |  Pose Estimated |  Distance from wrists to prisms
 :-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://github.com/Mercury-Smartstores/Mercury-Job-Dispatcher/blob/main/readme-assets/shelves_prisms.png" alt="Shelves Prisms" width="250"/>  |  <img src="https://github.com/Mercury-Smartstores/Mercury-Job-Dispatcher/blob/main/readme-assets/skeletals_annotated.png" alt="Pose Estimated for Customers" width="250"/> |  <img src="https://github.com/Mercury-Smartstores/Mercury-Job-Dispatcher/blob/main/readme-assets/distance_wrists_shelf.png" alt="Distance from wrists to prisms" width="250"/>
+<img src="https://github.com/Mercury-Smartstores/Mercury-Job-Dispatcher/blob/mainline/readme-assets/shelves_prisms.png" alt="Shelves Prisms" width="250"/>  |  <img src="https://github.com/Mercury-Smartstores/Mercury-Job-Dispatcher/blob/mainline/readme-assets/skeletals_annotated.png" alt="Pose Estimated for Customers" width="250"/> |  <img src="https://github.com/Mercury-Smartstores/Mercury-Job-Dispatcher/blob/mainline/readme-assets/distance_wrists_shelf.png" alt="Distance from wrists to prisms" width="250"/>
 
 ### 🔧 Installation
 
